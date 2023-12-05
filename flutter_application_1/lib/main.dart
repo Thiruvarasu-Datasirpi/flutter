@@ -1,101 +1,83 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    home: BasicKeyPage(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(MyApp());
 }
 
-class BasicKeyPage extends StatefulWidget {
-  const BasicKeyPage({super.key});
-
+class MyApp extends StatelessWidget {
   @override
-  State<BasicKeyPage> createState() => _BasicKeyPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      onGenerateRoute: (settings) {
+        // Check the route name and return the appropriate Widget
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(builder: (context) => HomeScreen());
+          case '/details':
+            // Extract arguments from settings.arguments if needed
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(builder: (context) => DetailsScreen(args['data']));
+          default:
+            // If the route is not found, you can return an error page or any fallback
+            return MaterialPageRoute(builder: (context) => NotFoundScreen());
+        }
+      },
+      initialRoute: '/',
+    );
+  }
 }
 
-class _BasicKeyPageState extends State<BasicKeyPage> {
-  bool showEmail = true;
-  bool showUsername = true;
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AdvancedKeyPage()),
-              );
-            },
-            icon: Icon(Icons.add),
-          ),
-        ],
+        title: Text('Home'),
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
-        alignment: Alignment.center,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (showEmail)
-                const TextField(
-                  key: ValueKey(1),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                  ),
-                ),
-              const SizedBox(height: 50),
-              if (showUsername)
-                const TextField(
-                  key: ValueKey(2),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                  ),
-                ),
-            ],
-          ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate to the '/details' route with some data
+            Navigator.pushNamed(
+              context,
+              '/details',
+              arguments: {'data': 'Some data for DetailsScreen'},
+            );
+          },
+          child: Text('Go to Details'),
         ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              shape: StadiumBorder(),
-            ),
-            icon: const Icon(Icons.visibility_off),
-            label: const Text('Remove Email'),
-            onPressed: () => setState(() => showEmail = false),
-          ),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              shape: StadiumBorder(),
-            ),
-            icon: const Icon(Icons.visibility_off),
-            label: const Text('Remove Username'),
-            onPressed: () => setState(() => showUsername = false),
-          ),
-        ],
       ),
     );
   }
 }
 
-class AdvancedKeyPage extends StatelessWidget {
+class DetailsScreen extends StatelessWidget {
+  final String data;
+
+  DetailsScreen(this.data);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Advanced Key Page'),
+        title: Text('Details'),
       ),
       body: Center(
-        child: Text('This is the Advanced Key Page'),
+        child: Text('Details: $data'),
+      ),
+    );
+  }
+}
+
+class NotFoundScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Not Found'),
+      ),
+      body: Center(
+        child: Text('Route not found!'),
       ),
     );
   }
