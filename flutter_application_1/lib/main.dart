@@ -42,6 +42,11 @@ class YourBodyWidget extends StatelessWidget {
           },
           child: Text('Click Me'),
         ),
+        SizedBox(height: 20),
+        Text(
+          'Description Section: Add a detailed description of your app or any other relevant information here.',
+          style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+        ),
       ],
     );
   }
