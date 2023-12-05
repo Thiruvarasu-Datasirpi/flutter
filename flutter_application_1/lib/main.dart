@@ -5,49 +5,39 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final TextEditingController _textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Your Title'),
+          title: Text('Text Field with Controller'),
         ),
-        body: YourBodyWidget(),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: _textEditingController,
+                  decoration: InputDecoration(labelText: 'Enter text'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    String enteredText = _textEditingController.text;
+                    // Do something with the entered text
+                    print('Entered Text: $enteredText');
+                  },
+                  child: Text('Get Text'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-    );
-  }
-}
-
-class YourBodyWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // Your main content goes here
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Welcome to Your App!',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 20),
-        Text(
-          'This is the information section below the title.',
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            // Add your button action here
-            print('Button Clicked!');
-          },
-          child: Text('Click Me'),
-        ),
-        SizedBox(height: 20),
-        Text(
-          'Description Section: Add a detailed description of your app or any other relevant information here.',
-          style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-        ),
-      ],
     );
   }
 }
