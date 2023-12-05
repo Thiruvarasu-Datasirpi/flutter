@@ -1,56 +1,101 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => AppState(),
-      child: MyApp(),
-    ),
-  );
+  runApp(const MaterialApp(
+    home: BasicKeyPage(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
-class AppState with ChangeNotifier {
-  int _counter = 0;
+class BasicKeyPage extends StatefulWidget {
+  const BasicKeyPage({super.key});
 
-  int get counter => _counter;
-
-  void incrementCounter() {
-    _counter++;
-    notifyListeners();
-  }
+  @override
+  State<BasicKeyPage> createState() => _BasicKeyPageState();
 }
 
-class MyApp extends StatelessWidget {
+class _BasicKeyPageState extends State<BasicKeyPage> {
+  bool showEmail = true;
+  bool showUsername = true;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Global State Example'),
-        ),
-        body: Center(
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdvancedKeyPage()),
+              );
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.all(16),
+        alignment: Alignment.center,
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Counter Value:',
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                '${Provider.of<AppState>(context).counter}',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-              ),
+              if (showEmail)
+                const TextField(
+                  key: ValueKey(1),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
+                ),
+              const SizedBox(height: 50),
+              if (showUsername)
+                const TextField(
+                  key: ValueKey(2),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                  ),
+                ),
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Increment the global counter
-            Provider.of<AppState>(context, listen: false).incrementCounter();
-          },
-          child: Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              shape: StadiumBorder(),
+            ),
+            icon: const Icon(Icons.visibility_off),
+            label: const Text('Remove Email'),
+            onPressed: () => setState(() => showEmail = false),
+          ),
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              shape: StadiumBorder(),
+            ),
+            icon: const Icon(Icons.visibility_off),
+            label: const Text('Remove Username'),
+            onPressed: () => setState(() => showUsername = false),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AdvancedKeyPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Advanced Key Page'),
+      ),
+      body: Center(
+        child: Text('This is the Advanced Key Page'),
       ),
     );
   }
