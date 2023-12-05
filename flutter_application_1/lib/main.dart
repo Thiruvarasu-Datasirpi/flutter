@@ -1,56 +1,56 @@
+// main.dart
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import 'counter_model.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => AppState(),
-      child: MyApp(),
-    ),
-  );
-}
-
-class AppState with ChangeNotifier {
-  int _counter = 0;
-
-  int get counter => _counter;
-
-  void incrementCounter() {
-    _counter++;
-    notifyListeners();
-  }
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Global State Example'),
+    return ScopedModel<CounterModel>(
+      model: CounterModel(),
+      child: MaterialApp(
+        home: HomePage(),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Scoped Model Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ScopedModelDescendant<CounterModel>(
+              builder: (context, child, model) {
+                return Text(
+                  'Counter Value: ${model.counter}',
+                  style: TextStyle(fontSize: 20),
+                );
+              },
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Counter Value:',
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                '${Provider.of<AppState>(context).counter}',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Increment the global counter
-            Provider.of<AppState>(context, listen: false).incrementCounter();
-          },
-          child: Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: ScopedModelDescendant<CounterModel>(
+        builder: (context, child, model) {
+          return FloatingActionButton(
+            onPressed: () {
+              model.incrementCounter();
+            },
+            child: Icon(Icons.add),
+          );
+        },
       ),
     );
   }
