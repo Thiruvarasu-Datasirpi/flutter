@@ -9,42 +9,52 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Container Example',
-      home: ContainerExample(),
+      title: 'Card Example',
+      home: CardExample(),
     );
   }
 }
 
-class ContainerExample extends StatelessWidget {
+class CardExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Container Example'),
+        title: Text('Card Example'),
       ),
       body: Center(
-        child: Container(
-          // Container properties
-          width: 200,
-          height: 200,
-          margin: EdgeInsets.all(16),
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.blue,
+        child: Card(
+          // Card properties
+          elevation: 5,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 3),
+          ),
+          // Card content
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text('Card Title'),
+                subtitle: Text('Card Subtitle'),
+                leading: Icon(Icons.star),
+              ),
+              ButtonBar(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      // Handle button tap
+                    },
+                    child: Text('ACTION 1'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Handle button tap
+                    },
+                    child: Text('ACTION 2'),
+                  ),
+                ],
               ),
             ],
-          ),
-          // Child widget
-          child: Text(
-            'Hello, Container!',
-            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
       ),
