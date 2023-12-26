@@ -10,41 +10,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Card Demo'),
+          title: Text('Flutter Image Example'),
         ),
         body: Center(
-          child: Card(
-            elevation: 8, // Add a shadow
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text('Beautiful Home in San Francisco'),
-                  subtitle: Text('3 beds, 2 baths, 1200 sqft'),
-                ),
-                Image.network('https://example.com/house.jpg'),
-                Container(
-                  padding: EdgeInsets.all(15),
-                  child: Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-                ),
-                ButtonBar(
-                  children: [
-                    TextButton(onPressed: () {}, child: Text('More Info')),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('Contact Agent'),
-                      style: TextButton.styleFrom(
-                        primary: Colors.purple,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Displaying image from the network
+              Image.network(
+                'Users/datasirpi/Downloads/wallpaperflare.com_wallpaper (1).jpg',
+                width: 200,
+                height: 200,
+              ),
+              SizedBox(height: 20),
+              // Displaying image from the local project
+              Image.asset(
+                'assets/your-image.jpg',
+                width: 200,
+                height: 200,
+              ),
+            ],
           ),
         ),
       ),
